@@ -44,7 +44,7 @@ class W4PL_List_Users_Posts extends W4PL_List implements W4PL_Interface_List
 
 		// html
 		$this->html  = '';
-		$this->html .= '<div id="w4pl-list-'. $this->id .'">'. "\n\t" .'<div id="w4pl-inner-'. $this->id .'" class="w4pl-inner">';
+		$this->html .= '<div data-ecs="true" id="w4pl-list-'. $this->id .'">'. "\n\t" .'<div id="w4pl-inner-'. $this->id .'" class="w4pl-inner">';
 		if (! empty($this->template)) {
 			$this->html .= "\n\t\t" . $this->template . "\n\t";
 		}

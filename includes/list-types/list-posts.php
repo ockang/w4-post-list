@@ -46,7 +46,7 @@ class W4PL_List_Posts extends W4PL_List implements W4PL_Interface_List
 
 		// html
 		$this->html  = '';
-		$this->html .= '<div id="w4pl-list-'. $this->id .'">'. "\n\t" .'<div id="w4pl-inner-'. $this->id .'" class="w4pl-inner">';
+		$this->html .= '<div data-ecs="true" id="w4pl-list-'. $this->id .'">'. "\n\t" .'<div id="w4pl-inner-'. $this->id .'" class="w4pl-inner">';
 		if (! empty($this->template)) {
 			$this->html .= "\n\t\t" . $this->template . "\n\t";
 		}
@@ -65,13 +65,21 @@ class W4PL_List_Posts extends W4PL_List implements W4PL_Interface_List
 		$paged = isset($_REQUEST['page'. $this->id]) ? $_REQUEST['page'. $this->id] : 1;
 		// create attern based on available tags
 		$pattern = $this->get_shortcode_regex();
+		
+		
 		// main template
-		$template = isset($this->options['template']) ? $this->options['template'] : '';
+		$template = isset($this->options['template']) ? '<section class="ecs-custom-fields">'. $this->options['template'] .'</section>' : '';
+
+		//ECS
+		//var_dump($this->options['template']);
+		
 		$terms_template = '';
 		$users_template = '';
 		$posts_template = '';
 		$groups_template = '';
 		$template_nav = '';
+
+
 
 		// match [groups]
 		if( preg_match('/\[terms\](.*?)\[\/terms\]/sm', $template, $terms_match) ) {
@@ -83,6 +91,7 @@ class W4PL_List_Posts extends W4PL_List implements W4PL_Interface_List
 		// match the loop template [posts]
 		if( preg_match('/\[posts\](.*?)\[\/posts\]/sm', $template, $posts_match) ) {
 			$posts_template = $posts_match['1'];
+			//var_dump($posts_template);
 		}
 		// match [groups]
 		if( preg_match('/\[groups\](.*?)\[\/groups\]/sm', $template, $groups_match) ) {
@@ -122,6 +131,7 @@ class W4PL_List_Posts extends W4PL_List implements W4PL_Interface_List
 						$this->posts_query->the_post();
 						if (in_array (get_the_ID(), $group['post_ids'])) {
 							$group_posts_loop .= preg_replace_callback( "/$pattern/s", array(&$this, 'do_shortcode_tag'), $posts_template );
+							//ECS
 						}
 					}
 
@@ -139,7 +149,14 @@ class W4PL_List_Posts extends W4PL_List implements W4PL_Interface_List
 				// post loop
 				while ($this->posts_query->have_posts()) {
 					$this->posts_query->the_post();
-					$posts_loop .= preg_replace_callback( "/$pattern/s", array(&$this, 'do_shortcode_tag'), $posts_template );
+					$ecs1 = get_field("medienspiegel");
+					//$posts_loop .= get_field("medienspiegel");
+					$posts_simplify = '<div class="carranza">'.$posts_template . $ecs1 .'</div>';
+					$posts_loop .= preg_replace_callback( "/$pattern/s", array(&$this, 'do_shortcode_tag'), $posts_simplify );
+					//ECS
+					//var_dump($posts_loop);
+					//var_dump($posts_template);
+					//echo $value = get_field( "medienspiegel" );
 				}
 
 				// replace [posts]
