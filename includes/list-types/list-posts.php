@@ -151,7 +151,7 @@ class W4PL_List_Posts extends W4PL_List implements W4PL_Interface_List
 					$this->posts_query->the_post();
 					$ecs1 = get_field("medienspiegel");
 					//$posts_loop .= get_field("medienspiegel");
-					$posts_simplify = '<div class="carranza">'.$posts_template . '<div class="saldana"><span>'.$ecs1 .'</span></div></div>';
+					$posts_simplify = '<div class="carranza">'.$posts_template . '<div class="saldana"><span class="small text-muted">'.$ecs1 .'</span></div></div>';
 					$posts_loop .= preg_replace_callback( "/$pattern/s", array(&$this, 'do_shortcode_tag'), $posts_simplify );
 					//ECS
 					//var_dump($posts_loop);
